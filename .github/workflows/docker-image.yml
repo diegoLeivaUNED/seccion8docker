@@ -34,7 +34,7 @@ jobs:
           
       - name: push docker image
         run: |
-          docker push jdleiva21/myimage:0.0.1 .
+          docker push jdleiva21/myimage:0.0.1 
           
           
     #- name: Build the Docker image
