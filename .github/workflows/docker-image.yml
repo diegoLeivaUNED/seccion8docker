@@ -18,25 +18,39 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: git semantic version
+        uses: paulhatch/semantic-version@v4.0.3
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "major:"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "feat:"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-prerelease${increment}"
+        id: version
+        
       - name: Docker login
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
+          NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           echo "iniciando login"
+          echo "new version $NEW_VERSION"
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "finalizando login"
 
           
-      - name: build docker image
-        run: |
-          docker build -t jdleiva21/myimage:0.0.2 .
-          docker build -t jdleiva21/myimage:latest .
+      # - name: build docker image
+      #   run: |
+      #     docker build -t jdleiva21/myimage:0.0.2 .
+      #     docker build -t jdleiva21/myimage:latest .
           
-      - name: push docker image
-        run: |
-          docker push jdleiva21/myimage:0.0.2 
-          docker push jdleiva21/myimage:latest
+      # - name: push docker image
+      #   run: |
+      #     docker push jdleiva21/myimage:0.0.2 
+      #     docker push jdleiva21/myimage:latest
           
-    #- name: Build the Docker image
-     # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
