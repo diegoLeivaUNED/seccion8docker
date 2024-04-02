@@ -26,6 +26,15 @@ jobs:
           echo "iniciando login"
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
           echo "finalizando login"
+
+          
+      - name: build docker image
+        run: |
+          docker build -t jdleiva21/myimage:0.0.1 .
+          
+      - name: push docker image
+        run: |
+          docker push jdleiva21/myimage:0.0.1 .
           
           
     #- name: Build the Docker image
