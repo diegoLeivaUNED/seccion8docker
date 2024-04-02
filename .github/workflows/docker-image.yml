@@ -36,7 +36,6 @@ jobs:
         env:
           DOCKER_USER: ${{ secrets.DOCKER_USER }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-          NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           echo "iniciando login"
           echo "new version $NEW_VERSION"
@@ -44,13 +43,17 @@ jobs:
           echo "finalizando login"
 
           
-      # - name: build docker image
-      #   run: |
-      #     docker build -t jdleiva21/myimage:0.0.2 .
-      #     docker build -t jdleiva21/myimage:latest .
+      - name: build docker image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker build -t jdleiva21/myimage:$NEW_VERSION .
+          docker build -t jdleiva21/myimage:latest .
           
-      # - name: push docker image
-      #   run: |
-      #     docker push jdleiva21/myimage:0.0.2 
-      #     docker push jdleiva21/myimage:latest
+      - name: push docker image
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          docker push jdleiva21/myimage:$NEW_VERSION
+          docker push jdleiva21/myimage:latest
           
