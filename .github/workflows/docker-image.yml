@@ -31,11 +31,12 @@ jobs:
       - name: build docker image
         run: |
           docker build -t jdleiva21/myimage:0.0.1 .
+          docker build -t jdleiva21/latest .
           
       - name: push docker image
         run: |
           docker push jdleiva21/myimage:0.0.1 
-          
+          docker push jdleiva21/myimage
           
     #- name: Build the Docker image
      # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
